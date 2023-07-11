@@ -18,6 +18,7 @@ function! Rust()
 	xnoremap <buffer> éd :normal ^xx<CR>
 	nnoremap <buffer> édc ^xx
 	nnoremap <buffer> éc ^i//<Esc>$<CR>
+	nnoremap <buffer> ts f"a.to_string()<Esc>
 
 	command! -nargs=1 Search execute "vimgrep /<args>/j **.rs" | copen
 

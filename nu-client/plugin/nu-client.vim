@@ -10,6 +10,8 @@ function! Nu()
 	nnoremap <buffer> éd ^x 
 	xnoremap <buffer> éd :normal ^x<CR>
 
+	nnoremap <buffer> fs F"i$<Esc>
+
 	function! InferPluginsFunction()
 		tabnew ~/vim_plugins/nu-client/plugin/nu-client.vim
 	endfunction

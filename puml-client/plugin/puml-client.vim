@@ -4,7 +4,7 @@ function! Puml()
 	nnoremap <buffer> éc I'<Esc>
 	nnoremap <buffer> éd 0x<Esc>
 
-	command! -nargs=0 Save PlantumlSave
+	command! -nargs=0 Save !plantuml %
 	command! -nargs=0 Open execute "!feh ".expand("%:r").".png &"
 	command! -nargs=0 Close !plant_uml_image close
 	command! -nargs=1 Search execute "vimgrep /<args>/j **.puml" | copen

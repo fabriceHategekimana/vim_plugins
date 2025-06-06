@@ -1,17 +1,14 @@
 
-function! Python()
+function! Coconut()
+	"ALEDisable
 	set nospell
-	let g:extention="py"
-
-	map = :norm! I#<CR>
-
-	command! Peek norm! yy:call PeekFunction()<CR>
+	let g:extention="coco"
 
 	"with the console
+	nnoremap <buffer> <silent> <F3> yip:call PasteToPane()<CR>
+	xnoremap <buffer> <silent> <F5> y:call PasteToPane()<CR>
 	nnoremap <buffer> <silent> <Return> yy:call PasteToPane()<CR>
-	xnoremap <buffer> <silent> <Return> y:call PasteToPane()<CR>
 	command! -nargs=0 -range Send <line1>,<line2>yank a | call PasteToPane()
-	command! -nargs=0 -range Fix !black % | e
 
 	"Raccourci pour le langage python
 	nnoremap <buffer> éc ^i# <Esc><CR>
@@ -37,7 +34,7 @@ function! Python()
 	"connaître le contenu d'un variable simple
 	nnoremap <buffer> év yiw:call PasteToPane()<cr>
 	"connaître le 'head' d'un dataframe
-	nnoremap <buffer> àh yiw:call SendToPane(@".".head()")<cr>
+	nnoremap <buffer> éh yiw:call SendToPane(@".".head()")<cr>
 	"connaître le 'shape' d'un vecteur
 	nnoremap <buffer> és yiw:call SendToPane(@".".shape")<cr>
 	"ouvrir une image (mise sous la forme de lien)
@@ -52,18 +49,14 @@ function! Python()
 	nnoremap <buffer> <silent> ée yy:call PasteToPane()<CR>
 
 	"python interpreter
-	nnoremap <buffer> <silent> <F4> :call TmuxSplit("ipython --no-autoindent", "-v")<CR>
 	command! -nargs=0 Console call TmuxSplit("ipython --no-autoindent", "-v")
-	nnoremap <buffer> <silent> <F5> :term python3 %<CR>
-	command! -nargs=0 Ru term /usr/local/bin/ipython %
-	"command! -nargs=0 Run term mypy --ignore-missing-imports % && /home/fabrice/.local/bin/ipython %
-	command! -nargs=0 Run term python3 %
-	command! -nargs=0 Test term python3 test.py
-	command! -nargs=0 Check split | term mypy --ignore-missing-imports %
+	command! -nargs=0 Build term coconut %
+	command! -nargs=0 Run term coconut -r --no-line-numbers --package % 
+	command! -nargs=0 Check term coconut --mypy %
 	xnoremap <buffer> <silent> <F5> y:call PasteToPane()<CR>
 	nnoremap <buffer> <silent> <F6> :term pytest %<CR>
 	nnoremap <buffer> <silent> <F7> yip:call PasteToPane()<CR>
-	command!  -nargs=1 Doc :!python3 -m pydoc <args>
+	command!  -nargs=0 Doc ! coconut --docs &
 	nnoremap éco :!gnome-terminal -- tmux new-session ipython<CR>
 
 	"numpy shortcuts
@@ -74,19 +67,13 @@ function! Python()
 	command! -nargs=0 Ref execute 'norm! yiw:vimgrep /<C-R>"/j *.py<Enter>:cope<Enter>'
 	command! -nargs=0 Debug !python3 -m pudb %
 
-	command! -nargs=1 Search execute "vimgrep /<args>/j **.py" | copen
+	command! -nargs=1 Search execute "vimgrep /<args>/j **.coco" | copen
 
 	function! InferPluginsFunction()
-		tabnew ~/vim_plugins/python-client/plugin/python-client.vim
+		tabnew ~/vim_plugins/coconut-client/plugin/coconut-client.vim
 	endfunction
 	
 	command! -nargs=0 Tomodule '<,'>w >> artifacts/module.py
+	command! -nargs=0 Coco call Coconut()
 
-endfunction
-
-function! PeekFunction()
-	let res = system("python3 /home/fabrice/sh/vim_jump_from_console python '".getline(".")."'")
-	let num_file = split(res, " ")
-	execute "split ".num_file[1]
-	execute ":".num_file[0]
 endfunction

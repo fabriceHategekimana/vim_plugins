@@ -1,4 +1,3 @@
-
 function! RunR()
 	call PasteToPane()
 endfunction
@@ -24,6 +23,8 @@ function! RLike()
 	command! -nargs=0 -range Send <line1>,<line2>yank a | call PasteToPane()
 
 	command! -nargs=1 Search execute "vimgrep /<args>/j **.r" | copen
+
+	nnoremap <Space> :TSPlaygroundToggle<CR>
 
 	nmap <F2> ggVG<F5>
 

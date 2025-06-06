@@ -1,6 +1,12 @@
 function! Nu()
 	set syntax=bash
 	command! Run term nu %
+	command! Test term nu -c "use std testing run-tests; run-tests"
+	command! Hey term /home/fabrice/sh/hey %
+
+	nnoremap <buffer> <silent> <Return> yy:call PasteToPane()<CR>
+	xnoremap <buffer> <silent> <Return> y:call PasteToPane()<CR>
+
 
 	"commentaire en mode en mode sélection
 	nnoremap <buffer> éc :normal I#<CR>

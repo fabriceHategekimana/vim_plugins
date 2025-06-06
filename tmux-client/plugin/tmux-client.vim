@@ -9,7 +9,7 @@ endfunction
 
 function! SendToPane(val) range
 		let exp = MyEscape(a:val)
-		execute "silent ".a:firstline.",".a:lastline."!tmux send-keys -t ".g:pane." '".exp."' Enter"
+		execute "silent !tmux send-keys -t ".g:pane." '".exp."' Enter"
 		execute "redraw!"
 endfunction
 

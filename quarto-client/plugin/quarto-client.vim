@@ -1,17 +1,15 @@
-
-function! Python()
+function! Quarto()
 	set nospell
-	let g:extention="py"
 
-	map = :norm! I#<CR>
-
-	command! Peek norm! yy:call PeekFunction()<CR>
+	inoremap python ```{python}<Return><Return>```<Up>
+	command! Preview split | term quarto preview %
 
 	"with the console
 	nnoremap <buffer> <silent> <Return> yy:call PasteToPane()<CR>
 	xnoremap <buffer> <silent> <Return> y:call PasteToPane()<CR>
 	command! -nargs=0 -range Send <line1>,<line2>yank a | call PasteToPane()
-	command! -nargs=0 -range Fix !black % | e
+	command! -nargs=0 -range RunAll g/```{python}/+1,/```/-1Send
+	nnoremap <buffer> <F5> :!bash ~/sh/compmd %<Space>
 
 	"Raccourci pour le langage python
 	nnoremap <buffer> éc ^i# <Esc><CR>
@@ -54,13 +52,9 @@ function! Python()
 	"python interpreter
 	nnoremap <buffer> <silent> <F4> :call TmuxSplit("ipython --no-autoindent", "-v")<CR>
 	command! -nargs=0 Console call TmuxSplit("ipython --no-autoindent", "-v")
-	nnoremap <buffer> <silent> <F5> :term python3 %<CR>
-	command! -nargs=0 Ru term /usr/local/bin/ipython %
-	"command! -nargs=0 Run term mypy --ignore-missing-imports % && /home/fabrice/.local/bin/ipython %
-	command! -nargs=0 Run term python3 %
-	command! -nargs=0 Test term python3 test.py
-	command! -nargs=0 Check split | term mypy --ignore-missing-imports %
-	xnoremap <buffer> <silent> <F5> y:call PasteToPane()<CR>
+	command! -nargs=0 Ru term python3 %
+	command! -nargs=0 Run term ++shell mypy --ignore-missing-imports % && python3 %
+	command! -nargs=0 Check term mypy %
 	nnoremap <buffer> <silent> <F6> :term pytest %<CR>
 	nnoremap <buffer> <silent> <F7> yip:call PasteToPane()<CR>
 	command!  -nargs=1 Doc :!python3 -m pydoc <args>
@@ -77,16 +71,9 @@ function! Python()
 	command! -nargs=1 Search execute "vimgrep /<args>/j **.py" | copen
 
 	function! InferPluginsFunction()
-		tabnew ~/vim_plugins/python-client/plugin/python-client.vim
+		tabnew ~/vim_plugins/quarto-client/plugin/quarto-client.vim
 	endfunction
 	
 	command! -nargs=0 Tomodule '<,'>w >> artifacts/module.py
 
-endfunction
-
-function! PeekFunction()
-	let res = system("python3 /home/fabrice/sh/vim_jump_from_console python '".getline(".")."'")
-	let num_file = split(res, " ")
-	execute "split ".num_file[1]
-	execute ":".num_file[0]
 endfunction

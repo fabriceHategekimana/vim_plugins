@@ -9,6 +9,7 @@ function! Markdown()
 	command! -nargs=0 Quotidien r /home/fabrice/note/templates/quotidien.md
 	command! -nargs=0 Date .!/home/fabrice/sh/my_date_md
 	command! -nargs=0 -range Display <line1>,<line2>w! old/display.md | !bash ~/sh/compmd old/display.md texv
+	command! -nargs=0 Pdf !bash ~/sh/compmd % pdf
 	
 	" Dépendances
 	call EditParams()
